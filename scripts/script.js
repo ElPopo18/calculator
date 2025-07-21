@@ -1,8 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let num1 = 10;
+    let firstNumber = '';
     let num2 = 5;
-    let operator = '/';
+    let operator = '';
+    let globalCounter = 0;
     let display = document.querySelector(".display")
+
+    if(operator === true){
+        console.log(true);
+    } else if (operator === false){
+        console.log(false);
+    }
 
     const numbers = {
         one: document.querySelector(".one"),
@@ -26,52 +33,70 @@ document.addEventListener('DOMContentLoaded', function () {
 
     Object.values(operators).forEach(btn => {
         btn.addEventListener("click", function printOperators() {
-            display.textContent = btn.textContent;
+            if(display.textContent.length == 1 || display.textContent.length == 2){
+                globalCounter ++;
+                operator = btn.textContent;
+                display.textContent += operator;
+                console.log(operator);
+                console.log(globalCounter);
+            }
         })
     })
     
-
     Object.values(numbers).forEach(btn => {
         btn.addEventListener("click", function printNumbers() {
-            display.textContent = btn.textContent;
+            let numberPlaceholder = btn.textContent;
+                globalCounter ++;
+                display.textContent += numberPlaceholder;
+                firstNumber = display.textContent;
+                console.log(globalCounter);
+            
         })
     })
 
-    console.log(display.textContent);
+    if(globalCounter >= 2){
+        Object.values(numbers).forEach(btn => {
+            btn.addEventListener("click", function printNumbers() {
+                let numberPlaceholder = btn.textContent;
+                    display.textContent += numberPlaceholder;
+                    firstNumber = display.textContent;
+            })
+        })
+    }
 
-    operate(num1, num2, operator);
+    operate(firstNumber, num2, operator);
 
-    function operate(num1, num2, operator){
+    function operate(firstNumber, num2, operator){
         switch (operator){
             case '+':
-                addition(num1, num2);
+                addition(firstNumber, num2);
                 break;
             case '-':
-                subtraction(num1, num2);
+                subtraction(firstNumber, num2);
                 break;
             case '*':
-                multiplication(num1, num2);
+                multiplication(firstNumber, num2);
                 break;
             case '/':
-                division(num1, num2);
+                division(firstNumber, num2);
                 break;
         }
     }
 
-    function addition(num1, num2){
-        console.log (num1 + num2);
+    function addition(firstNumber, num2){
+        console.log (firstNumber + num2);
     }
 
-    function subtraction(num1, num2){
-        console.log (num1 - num2);
+    function subtraction(firstNumber, num2){
+        console.log (firstNumber - num2);
     }
 
-    function multiplication(num1, num2){
-        console.log (num1 * num2);
+    function multiplication(firstNumber, num2){
+        console.log (firstNumber * num2);
     }
 
-    function division(num1, num2){
-        console.log (num1 / num2);
+    function division(firstNumber, num2){
+        console.log (firstNumber / num2);
     }
 
 
