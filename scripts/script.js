@@ -1,10 +1,25 @@
 let num1 = 10;
 let num2 = 5;
+let operator = '/';
 
-addition(num1, num2);
-subtraction(num1, num2);
-multiplication(num1, num2);
-division(num1, num2);
+operate(num1, num2, operator);
+
+function operate(num1, num2, operator){
+    switch (operator){
+        case '+':
+            addition(num1, num2);
+            break;
+        case '-':
+            subtraction(num1, num2);
+            break;
+        case '*':
+            multiplication(num1, num2);
+            break;
+        case '/':
+            division(num1, num2);
+            break;
+    }
+}
 
 function addition(num1, num2){
     console.log (num1 + num2);
