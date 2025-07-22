@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let display = document.querySelector(".display");
     const numerical = '0123456789';
     const operatorsList = '+-*/';
+    const equalTo = document.querySelector('.equalTo')
 
     const numbers = {
         one: document.querySelector(".one"),
@@ -37,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .slice(-1)
             .filter((character) => numerical.includes(character))
             if(filteredOperator.length == 1 && operator == ''){
-                console.log(filteredOperator);
                 globalCounter ++;
                 operator = btn.textContent;
                 display.textContent += operator
@@ -62,47 +62,57 @@ document.addEventListener('DOMContentLoaded', function () {
             .filter((character) => operatorsList.includes(character));
             if(globalCounter >= 2 && filteredNumbers.length > 0){
                 let numberPlaceholder = btn.textContent;
+                secondNumber += numberPlaceholder;
                 display.textContent += numberPlaceholder;
-                secondNumber = display.textContent;
             }
         })
     })
 
+    equalTo.addEventListener("click", operate)
 
-
-    operate(firstNumber, num2, operator);
-
-    function operate(firstNumber, num2, operator){
+    function operate(){
         switch (operator){
             case '+':
-                addition(firstNumber, num2);
+                addition(firstNumber, secondNumber);
                 break;
             case '-':
-                subtraction(firstNumber, num2);
+                subtraction(firstNumber, secondNumber);
                 break;
             case '*':
-                multiplication(firstNumber, num2);
+                multiplication(firstNumber, secondNumber);
                 break;
             case '/':
-                division(firstNumber, num2);
+                division(firstNumber, secondNumber);
                 break;
         }
     }
 
-    function addition(firstNumber, num2){
-        console.log (firstNumber + num2);
+    function addition(firstNumber, secondNumber){
+        firstNumber = parseInt(firstNumber);
+        secondNumber = parseInt(secondNumber);
+        result = firstNumber + secondNumber;
+        display.textContent = result;
     }
 
-    function subtraction(firstNumber, num2){
-        console.log (firstNumber - num2);
+    function subtraction(firstNumber, secondNumber){
+        firstNumber = parseInt(firstNumber);
+        secondNumber = parseInt(secondNumber);
+        result = firstNumber - secondNumber;
+        display.textContent = result;
     }
 
-    function multiplication(firstNumber, num2){
-        console.log (firstNumber * num2);
+    function multiplication(firstNumber, secondNumber){
+        firstNumber = parseInt(firstNumber);
+        secondNumber = parseInt(secondNumber);
+        result = firstNumber * secondNumber;
+        display.textContent = result;
     }
 
-    function division(firstNumber, num2){
-        console.log (firstNumber / num2);
+    function division(firstNumber, secondNumber){
+        firstNumber = parseInt(firstNumber);
+        secondNumber = parseInt(secondNumber);
+        result = firstNumber / secondNumber;
+        display.textContent = result;
     }
 
 })
