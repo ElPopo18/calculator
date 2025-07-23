@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let globalCounter = 0;
     let result = 0;
     let display = document.querySelector(".display");
+    const clear = document.querySelector(".clear");
     const numerical = '0123456789';
     const operatorsList = '+-*/';
     const equalTo = document.querySelector('.equalTo')
@@ -31,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     Object.values(operators).forEach(btn => {  //Will convert the values of the parameters of the operators object into an array
         btn.addEventListener("click", function printOperators() {
-            console.log(firstNumber);
             let filteredOperator = display.textContent.split('')
             .slice(-1)
             .filter((character) => numerical.includes(character))
@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 operator = ''
                 operator = btn.textContent;
                 display.textContent += operator;
-                console.log(display.textContent);
             }
         })
     })
@@ -53,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
     Object.values(numbers).forEach(btn => {
         btn.addEventListener("click", function printNumbers() {
             if(globalCounter === 0 || globalCounter === 1){
+                if(display.textContent == 0){
+                    display.textContent = '';
+                }
                 let numberPlaceholder = btn.textContent;
                     globalCounter++;
                     firstNumber += numberPlaceholder;
@@ -61,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
             let filteredNumbers = display.textContent.split('')
             .slice(-2)
             .filter((character) => operatorsList.includes(character));
-            console.log(filteredNumbers);
             if(globalCounter >= 2 && filteredNumbers.length > 0){
                 let numberPlaceholder = btn.textContent;
                 secondNumber += numberPlaceholder;
@@ -69,6 +70,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
     })
+
+    clear.addEventListener("click", clearDisplay);
 
     equalTo.addEventListener("click", operate)
 
@@ -97,8 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let trueResult = firstNumber + secondNumber;
         result = trueResult.toFixed(2);
         display.textContent = result;
-        console.log(globalCounter);
-
         firstNumber = result.toString();
         secondNumber = '';
         
@@ -134,6 +135,14 @@ document.addEventListener('DOMContentLoaded', function () {
         firstNumber = result.toString();
         secondNumber = '';
         
+    }
+
+    function clearDisplay(){
+        display.textContent = 0;
+        firstNumber = '';
+        secondNumber = '';
+        operator = '';
+        globalCounter = 0;
     }
 
 })
