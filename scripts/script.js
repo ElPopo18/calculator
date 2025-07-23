@@ -129,12 +129,15 @@ document.addEventListener('DOMContentLoaded', function () {
     function division(){
         firstNumber = parseFloat(firstNumber);
         secondNumber = parseFloat(secondNumber);
-        let trueResult = firstNumber / secondNumber;
-        result = trueResult.toFixed(2);
-        display.textContent = result;
-        firstNumber = result.toString();
-        secondNumber = '';
-        
+        if(secondNumber === 0){
+            display.textContent = "AYOOO! What are you doing!? >:(";
+        }else {
+            let trueResult = firstNumber / secondNumber;
+            result = trueResult.toFixed(2);
+            display.textContent = result;
+            firstNumber = result.toString();
+            secondNumber = '';
+        }        
     }
 
     function clearDisplay(){
