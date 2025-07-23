@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     Object.values(numbers).forEach(btn => {
         btn.addEventListener("click", function printNumbers() {
-            console.log('oli');
             if(globalCounter === 0 || globalCounter === 1){
                 if(display.textContent == 0){
                     display.textContent = '';
@@ -108,6 +107,9 @@ document.addEventListener('DOMContentLoaded', function () {
         let trueResult = firstNumber + secondNumber;
         result = trueResult.toFixed(2);
         display.textContent = result;
+        if(display.textContent.includes('.')){
+            display.textContent = removeZeros(display.textContent);
+        }
         firstNumber = result.toString();
         secondNumber = '';
         
@@ -119,6 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
         let trueResult = firstNumber - secondNumber;
         result = trueResult.toFixed(2);
         display.textContent = result;
+        if(display.textContent.includes('.')){
+            display.textContent = removeZeros(display.textContent);
+        }
         firstNumber = result.toString();
         secondNumber = '';
         
@@ -130,6 +135,9 @@ document.addEventListener('DOMContentLoaded', function () {
         let trueResult = firstNumber * secondNumber;
         result = trueResult.toFixed(2);
         display.textContent = result;
+        if(display.textContent.includes('.')){
+            display.textContent = removeZeros(display.textContent);
+        }
         firstNumber = result.toString();
         secondNumber = '';
     }
@@ -139,10 +147,14 @@ document.addEventListener('DOMContentLoaded', function () {
         secondNumber = parseFloat(secondNumber);
         if(secondNumber === 0){
             display.textContent = "AYOOO! What are you doing!? >:(";
-        }else {
+        }else{
             let trueResult = firstNumber / secondNumber;
             result = trueResult.toFixed(2);
             display.textContent = result;
+            if(display.textContent.includes('.')){
+                display.textContent = removeZeros(display.textContent);
+            }
+            
             firstNumber = result.toString();
             secondNumber = '';
         }        
@@ -155,6 +167,18 @@ document.addEventListener('DOMContentLoaded', function () {
         operator = '';
         result = '';
         globalCounter = 0;
+    }
+
+    function removeZeros(display){
+        let removeZeros = display.split('')
+        .slice(-3);
+        if(removeZeros[1] == '0' && removeZeros[2] == '0'){
+            display = display.slice(0, -3);
+            return display;
+        } else if (removeZeros[2] == '0'){
+            display = display.slice(0, -1);
+            return display;
+        }
     }
 
 })
