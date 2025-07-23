@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         division: document.querySelector(".division"),
     }
 
-    let first = Object.values(operators).forEach(btn => {  //Will convert the values of the parameters of the operators object into an array
+    Object.values(operators).forEach(btn => {  //Will convert the values of the parameters of the operators object into an array
         btn.addEventListener("click", function printOperators() {
             let filteredOperator = display.textContent.split('')
             .slice(-1)
