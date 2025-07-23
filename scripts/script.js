@@ -36,46 +36,28 @@ document.addEventListener('DOMContentLoaded', function () {
             .slice(-1)
             .filter((character) => numerical.includes(character))
             if(filteredOperator.length == 1 && operator == ''){
-                operator = '';
+                displayOperator(btn.textContent);
                 globalCounter ++;
-                operator = btn.textContent;
-                display.textContent += operator
             } else if(filteredOperator.length == 1 && operator != '') {
-                operate()
-                operator = ''
-                operator = btn.textContent;
-                display.textContent += operator;
+                operate();
+                displayOperator(btn.textContent);
             }
         })
     })
 
-    
-    
     Object.values(numbers).forEach(btn => {
         btn.addEventListener("click", function printNumbers() {
             if(globalCounter === 0 || globalCounter === 1){
-                if(display.textContent == 0){
-                    display.textContent = '';
-                }
-                let numberPlaceholder = btn.textContent;
-                    globalCounter++;
-                    firstNumber += numberPlaceholder;
-                    display.textContent += numberPlaceholder;
+                printFirstNumber(btn.textContent);
             }
             let filteredNumbers = display.textContent.split('')
             .slice(-2)
             .filter((character) => operatorsList.includes(character));
             if(result != '' && filteredNumbers == ''){
                 clearDisplay();
-                display.textContent = '';
-                let numberPlaceholder = btn.textContent;
-                globalCounter++;
-                firstNumber += numberPlaceholder;
-                display.textContent += numberPlaceholder;
+                printFirstNumber(btn.textContent);
             }else if(globalCounter >= 2 && filteredNumbers.length > 0){
-                let numberPlaceholder = btn.textContent;
-                secondNumber += numberPlaceholder;
-                display.textContent += numberPlaceholder;
+                printSecondNumber(btn.textContent);
             }
         })
     })
@@ -83,6 +65,28 @@ document.addEventListener('DOMContentLoaded', function () {
     clear.addEventListener("click", clearDisplay);
 
     equalTo.addEventListener("click", operate)
+
+    function printFirstNumber(buttonText){
+        if(display.textContent == 0){
+            display.textContent = '';
+        }
+        let numberPlaceholder = buttonText;
+        globalCounter++;
+        firstNumber += numberPlaceholder;
+        display.textContent += numberPlaceholder;
+    }
+
+    function printSecondNumber(buttonText){
+        let numberPlaceholder = buttonText;
+        secondNumber += numberPlaceholder;
+        display.textContent += numberPlaceholder;
+    }
+
+    function displayOperator(buttonText){
+        operator = ''
+        operator = buttonText;
+        display.textContent += operator;
+    }
 
     function operate(){
         switch (true){
@@ -179,5 +183,4 @@ document.addEventListener('DOMContentLoaded', function () {
             return display;
         }
     }
-
 })
