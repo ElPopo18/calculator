@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         division: document.querySelector(".division"),
     }
 
-    Object.values(operators).forEach(btn => {  //Will convert the values of the parameters of the operators object into an array
+    let first = Object.values(operators).forEach(btn => {  //Will convert the values of the parameters of the operators object into an array
         btn.addEventListener("click", function printOperators() {
             let filteredOperator = display.textContent.split('')
             .slice(-1)
@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
     })
+
+    
     
     Object.values(numbers).forEach(btn => {
         btn.addEventListener("click", function printNumbers() {
@@ -102,62 +104,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function addition(){
-        firstNumber = parseFloat(firstNumber);
-        secondNumber = parseFloat(secondNumber);
-        let trueResult = firstNumber + secondNumber;
-        result = trueResult.toFixed(2);
+        result = resultOfOperation();
         display.textContent = result;
-        if(display.textContent.includes('.')){
-            display.textContent = removeZeros(display.textContent);
-        }
-        firstNumber = result.toString();
-        secondNumber = '';
-        
     }
 
     function subtraction(){
-        firstNumber = parseFloat(firstNumber);
-        secondNumber = parseFloat(secondNumber);
-        let trueResult = firstNumber - secondNumber;
-        result = trueResult.toFixed(2);
+        result = resultOfOperation();
         display.textContent = result;
-        if(display.textContent.includes('.')){
-            display.textContent = removeZeros(display.textContent);
-        }
-        firstNumber = result.toString();
-        secondNumber = '';
-        
     }
 
     function multiplication(){
-        firstNumber = parseFloat(firstNumber);
-        secondNumber = parseFloat(secondNumber);
-        let trueResult = firstNumber * secondNumber;
-        result = trueResult.toFixed(2);
+        result = resultOfOperation();
         display.textContent = result;
-        if(display.textContent.includes('.')){
-            display.textContent = removeZeros(display.textContent);
-        }
-        firstNumber = result.toString();
-        secondNumber = '';
     }
 
     function division(){
-        firstNumber = parseFloat(firstNumber);
-        secondNumber = parseFloat(secondNumber);
-        if(secondNumber === 0){
-            display.textContent = "AYOOO! What are you doing!? >:(";
-        }else{
-            let trueResult = firstNumber / secondNumber;
-            result = trueResult.toFixed(2);
-            display.textContent = result;
-            if(display.textContent.includes('.')){
-                display.textContent = removeZeros(display.textContent);
-            }
-            
-            firstNumber = result.toString();
-            secondNumber = '';
-        }        
+        result = resultOfOperation();
+        display.textContent = result;
     }
 
     function clearDisplay(){
@@ -169,6 +132,40 @@ document.addEventListener('DOMContentLoaded', function () {
         globalCounter = 0;
     }
 
+    function resultOfOperation(){
+        let operationResult;
+        let trueResult;
+        firstNumber = parseFloat(firstNumber);
+        secondNumber = parseFloat(secondNumber);
+        switch (operator){
+            case ('+'):
+                operationResult = firstNumber + secondNumber;
+                break;
+            case ('-'):
+                operationResult = firstNumber - secondNumber;
+                break;
+            case ('*'):
+                operationResult = firstNumber * secondNumber;
+                break;
+            case ('/'):
+                if(secondNumber === 0){
+                    trueResult = "AYOOO! What are you doing!? >:(";
+                    return trueResult;
+                } else {
+                    operationResult = firstNumber / secondNumber;
+                    break;
+                }
+        }
+        trueResult = operationResult.toFixed(2);
+        trueResult = trueResult.toString();
+        if(trueResult.includes('.')){
+            trueResult = removeZeros(trueResult);
+        }
+        firstNumber = trueResult;
+        secondNumber = '';
+        return trueResult
+    }
+
     function removeZeros(display){
         let removeZeros = display.split('')
         .slice(-3);
@@ -177,6 +174,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return display;
         } else if (removeZeros[2] == '0'){
             display = display.slice(0, -1);
+            return display;
+        } else {
             return display;
         }
     }
