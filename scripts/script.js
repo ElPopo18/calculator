@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if(globalCounter === 0 || globalCounter === 1){
                 let numberPlaceholder = btn.textContent;
                     globalCounter++;
+                    firstNumber += numberPlaceholder;
                     display.textContent += numberPlaceholder;
-                    firstNumber = display.textContent;
             }
             let filteredNumbers = display.textContent.split('')
             .slice(-2)
@@ -92,9 +92,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function addition(){
-        firstNumber = parseInt(firstNumber);
-        secondNumber = parseInt(secondNumber);
-        result = firstNumber + secondNumber;
+        firstNumber = parseFloat(firstNumber);
+        secondNumber = parseFloat(secondNumber);
+        let trueResult = firstNumber + secondNumber;
+        result = trueResult.toFixed(2);
         display.textContent = result;
         console.log(globalCounter);
 
@@ -104,33 +105,32 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function subtraction(){
-        firstNumber = parseInt(firstNumber);
-        secondNumber = parseInt(secondNumber);
-        result = firstNumber - secondNumber;
+        firstNumber = parseFloat(firstNumber);
+        secondNumber = parseFloat(secondNumber);
+        let trueResult = firstNumber - secondNumber;
+        result = trueResult.toFixed(2);
         display.textContent = result;
-
         firstNumber = result.toString();
         secondNumber = '';
         
     }
 
     function multiplication(){
-        firstNumber = parseInt(firstNumber);
-        secondNumber = parseInt(secondNumber);
-        result = firstNumber * secondNumber;
+        firstNumber = parseFloat(firstNumber);
+        secondNumber = parseFloat(secondNumber);
+        let trueResult = firstNumber * secondNumber;
+        result = trueResult.toFixed(2);
         display.textContent = result;
-
         firstNumber = result.toString();
         secondNumber = '';
-        
     }
 
     function division(){
-        firstNumber = parseInt(firstNumber);
-        secondNumber = parseInt(secondNumber);
-        result = firstNumber / secondNumber;
+        firstNumber = parseFloat(firstNumber);
+        secondNumber = parseFloat(secondNumber);
+        let trueResult = firstNumber / secondNumber;
+        result = trueResult.toFixed(2);
         display.textContent = result;
-
         firstNumber = result.toString();
         secondNumber = '';
         
