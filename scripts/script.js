@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     Object.values(numbers).forEach(btn => {
         btn.addEventListener("click", function printNumbers() {
+            console.log('oli');
             if(globalCounter === 0 || globalCounter === 1){
                 if(display.textContent == 0){
                     display.textContent = '';
@@ -63,7 +64,14 @@ document.addEventListener('DOMContentLoaded', function () {
             let filteredNumbers = display.textContent.split('')
             .slice(-2)
             .filter((character) => operatorsList.includes(character));
-            if(globalCounter >= 2 && filteredNumbers.length > 0){
+            if(result != '' && filteredNumbers == ''){
+                clearDisplay();
+                display.textContent = '';
+                let numberPlaceholder = btn.textContent;
+                globalCounter++;
+                firstNumber += numberPlaceholder;
+                display.textContent += numberPlaceholder;
+            }else if(globalCounter >= 2 && filteredNumbers.length > 0){
                 let numberPlaceholder = btn.textContent;
                 secondNumber += numberPlaceholder;
                 display.textContent += numberPlaceholder;
@@ -145,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
         firstNumber = '';
         secondNumber = '';
         operator = '';
+        result = '';
         globalCounter = 0;
     }
 
