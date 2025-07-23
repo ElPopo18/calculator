@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let secondNumber = '';
     let operator = '';
     let globalCounter = 0;
+    let result = 0;
     let display = document.querySelector(".display");
     const numerical = '0123456789';
     const operatorsList = '+-*/';
@@ -30,17 +31,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     Object.values(operators).forEach(btn => {  //Will convert the values of the parameters of the operators object into an array
         btn.addEventListener("click", function printOperators() {
-            /* Will convert display.textContent into an array, take the last element of it
-            and convert it into another array, then it will filter that array and check if it
-            contains a number or a operator, if it contains a number then it will execute the conditional
-            and print the operator in the display screen, if not then it will not print anything */
+            console.log(firstNumber);
             let filteredOperator = display.textContent.split('')
             .slice(-1)
             .filter((character) => numerical.includes(character))
             if(filteredOperator.length == 1 && operator == ''){
+                operator = '';
                 globalCounter ++;
                 operator = btn.textContent;
                 display.textContent += operator
+            } else if(filteredOperator.length == 1 && operator != '') {
+                operate()
+                operator = ''
+                operator = btn.textContent;
+                display.textContent += operator;
+                console.log(display.textContent);
             }
         })
     })
@@ -53,13 +58,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     display.textContent += numberPlaceholder;
                     firstNumber = display.textContent;
             }
-            /* Will convert display.textContent into an array, take the last element of it
-            and convert it into another array, then it will filter that array and check if it
-            contains a number or a operator, if it contains a operator then it will execute the conditional
-            and print the numbers in the display screen, if not then it will not print anything */
             let filteredNumbers = display.textContent.split('')
             .slice(-2)
             .filter((character) => operatorsList.includes(character));
+            console.log(filteredNumbers);
             if(globalCounter >= 2 && filteredNumbers.length > 0){
                 let numberPlaceholder = btn.textContent;
                 secondNumber += numberPlaceholder;
@@ -71,48 +73,67 @@ document.addEventListener('DOMContentLoaded', function () {
     equalTo.addEventListener("click", operate)
 
     function operate(){
-        switch (operator){
-            case '+':
-                addition(firstNumber, secondNumber);
+        switch (true){
+            case (operator == '+' && secondNumber != ''):
+                addition();
                 break;
-            case '-':
-                subtraction(firstNumber, secondNumber);
+            case (operator == '-' && secondNumber != ''):
+                subtraction();
                 break;
-            case '*':
-                multiplication(firstNumber, secondNumber);
+            case (operator == '*' && secondNumber != ''):
+                multiplication();
                 break;
-            case '/':
-                division(firstNumber, secondNumber);
+            case (operator == '/' && secondNumber != ''):
+                division();
+                break;
+            case (secondNumber == ''):
                 break;
         }
     }
 
-    function addition(firstNumber, secondNumber){
+    function addition(){
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
         result = firstNumber + secondNumber;
         display.textContent = result;
+        console.log(globalCounter);
+
+        firstNumber = result.toString();
+        secondNumber = '';
+        
     }
 
-    function subtraction(firstNumber, secondNumber){
+    function subtraction(){
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
         result = firstNumber - secondNumber;
         display.textContent = result;
+
+        firstNumber = result.toString();
+        secondNumber = '';
+        
     }
 
-    function multiplication(firstNumber, secondNumber){
+    function multiplication(){
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
         result = firstNumber * secondNumber;
         display.textContent = result;
+
+        firstNumber = result.toString();
+        secondNumber = '';
+        
     }
 
-    function division(firstNumber, secondNumber){
+    function division(){
         firstNumber = parseInt(firstNumber);
         secondNumber = parseInt(secondNumber);
         result = firstNumber / secondNumber;
         display.textContent = result;
+
+        firstNumber = result.toString();
+        secondNumber = '';
+        
     }
 
 })
