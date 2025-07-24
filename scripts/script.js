@@ -38,19 +38,23 @@ document.addEventListener('DOMContentLoaded', function () {
             .slice(-1)
             .filter((character) => numerical.includes(character))
             if(filteredOperator.length == 1 && operator == ''){
-                displayOperator(btn.textContent);
-                globalCounter ++;
-            } else if(filteredOperator.length == 1 && operator != '' && btn.textContent != '%') {
-                operate();
-                displayOperator(btn.textContent);
-            }else if(btn.textContent == "%" && operator == ''){
-                displayOperator(btn.textContent);
-                operate();
-                globalCounter ++;
-            }else if(btn.textContent == "%" && operator != ''){
-                operate();
-                displayOperator(btn.textContent);
-            } 
+                if(btn.textContent == '%'){
+                    displayOperator(btn.textContent);
+                    operate();
+                    globalCounter ++;
+                } else {
+                    displayOperator(btn.textContent);
+                    globalCounter ++;
+                }
+            }else if(filteredOperator.length == 1 && operator != '') {
+                    operate();
+                    if(btn.textContent == '%' && operator != '%'){
+                        displayOperator(btn.textContent);
+                        operate();
+                    }
+                    displayOperator(btn.textContent);
+
+            }
         })
     })
 
@@ -116,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
             case (operator == '^' && secondNumber != ''):
                 power();
                 break;
-            case (operator == '%' && secondNumber == ''):
+            case (operator == '%'):
                 percentage();
                 break;
             case (secondNumber == ''):
