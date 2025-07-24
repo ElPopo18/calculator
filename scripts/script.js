@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let display = document.querySelector(".display");
     const clear = document.querySelector(".clear");
     const numerical = '0123456789';
-    const operatorsList = '+-*/';
+    const operatorsList = '+-*/^';
     const equalTo = document.querySelector('.equalTo')
 
     const numbers = {
@@ -28,9 +28,11 @@ document.addEventListener('DOMContentLoaded', function () {
         subtraction: document.querySelector(".subtraction"),
         multiplication: document.querySelector(".multiplication"),
         division: document.querySelector(".division"),
+        power: document.querySelector(".power"),
+        percentage: document.querySelector(".percentage"),
     }
 
-    Object.values(operators).forEach(btn => {  //Will convert the values of the parameters of the operators object into an array
+    Object.values(operators).forEach(btn => {
         btn.addEventListener("click", function printOperators() {
             let filteredOperator = display.textContent.split('')
             .slice(-1)
@@ -38,10 +40,17 @@ document.addEventListener('DOMContentLoaded', function () {
             if(filteredOperator.length == 1 && operator == ''){
                 displayOperator(btn.textContent);
                 globalCounter ++;
-            } else if(filteredOperator.length == 1 && operator != '') {
+            } else if(filteredOperator.length == 1 && operator != '' && btn.textContent != '%') {
                 operate();
                 displayOperator(btn.textContent);
-            }
+            }else if(btn.textContent == "%" && operator == ''){
+                displayOperator(btn.textContent);
+                operate();
+                globalCounter ++;
+            }else if(btn.textContent == "%" && operator != ''){
+                operate();
+                displayOperator(btn.textContent);
+            } 
         })
     })
 
@@ -85,7 +94,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayOperator(buttonText){
         operator = ''
         operator = buttonText;
-        display.textContent += operator;
+        if(operator != '%'){
+            display.textContent += operator;
+        }
     }
 
     function operate(){
@@ -101,6 +112,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
             case (operator == '/' && secondNumber != ''):
                 division();
+                break;
+            case (operator == '^' && secondNumber != ''):
+                power();
+                break;
+            case (operator == '%' && secondNumber == ''):
+                percentage();
                 break;
             case (secondNumber == ''):
                 break;
@@ -127,6 +144,16 @@ document.addEventListener('DOMContentLoaded', function () {
         display.textContent = result;
     }
 
+    function power(){
+        result = resultOfOperation();
+        display.textContent = result;
+    }
+
+    function percentage(){
+        result = resultOfOperation();
+        display.textContent = result;
+    }
+
     function clearDisplay(){
         display.textContent = 0;
         firstNumber = '';
@@ -137,6 +164,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function resultOfOperation(){
+        let percentageNumber = 100
         let operationResult;
         let trueResult;
         firstNumber = parseFloat(firstNumber);
@@ -159,6 +187,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     operationResult = firstNumber / secondNumber;
                     break;
                 }
+            case ('^'):
+                operationResult = Math.pow(firstNumber, secondNumber);
+                break;
+            case ('%'):
+                operationResult = firstNumber / percentageNumber;
+                break;
         }
         trueResult = operationResult.toFixed(2);
         trueResult = trueResult.toString();
