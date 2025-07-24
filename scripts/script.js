@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     Object.values(operators).forEach(btn => {
         btn.addEventListener("click", function printOperators() {
+            if(firstNumber == ''){
+                firstNumber = 0;
+                globalCounter ++;
+            }
             let filteredOperator = display.textContent.split('')
             .slice(-1)
             .filter((character) => numerical.includes(character))
@@ -47,13 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     globalCounter ++;
                 }
             }else if(filteredOperator.length == 1 && operator != '') {
-                    operate();
-                    if(btn.textContent == '%' && operator != '%'){
-                        displayOperator(btn.textContent);
-                        operate();
-                    }
+                operate();
+                if(btn.textContent == '%' && operator != '%'){
                     displayOperator(btn.textContent);
-
+                    operate();
+                }
+                displayOperator(btn.textContent);
             }
         })
     })
