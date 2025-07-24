@@ -42,7 +42,7 @@ body{
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 }
 
 .screen{
@@ -72,7 +72,7 @@ body{
     height: 100%;
     background-color: black;
     display: flex;
-    gap: 2px;
+    gap: 4px;
 }
 
 button{
@@ -80,4 +80,43 @@ button{
     height: 100%;
     font-size: 24px;
     font-weight: bold;
+    background-color: lightgray;
+    border-style: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: rgba(211, 211, 211, 0.87);
+}
+
+button:active{
+    background-color: rgba(211, 211, 211, 0.507);
+}
+
+.clear{
+    background-color: red;
+    color: white;
+}
+
+.clear:hover{
+    background-color: rgb(230, 0, 0);
+}
+
+.clear:active{
+    background-color: rgb(182, 0, 0);
+}
+
+
+.equalTo{
+    background-color: blue;
+    color: white;
+}
+
+.equalTo:hover{
+    background-color: rgb(0, 0, 230);
+}
+
+.equalTo:active{
+    background-color: rgb(0, 0, 182);
 }
