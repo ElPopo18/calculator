@@ -2,13 +2,18 @@ document.addEventListener('DOMContentLoaded', function () {
     let firstNumber = '';
     let secondNumber = '';
     let operator = '';
-    let globalCounter = 0;
     let result = 0;
     let display = document.querySelector(".display");
     const clear = document.querySelector(".clear");
     const numerical = '0123456789';
-    const operatorsList = '+-*/^';
     const equalTo = document.querySelector('.equalTo')
+
+    const counters = {
+        firstNumber: 0,
+        firstNumberDecimals:0,
+        secondNumber: 0,
+        secondNumberDecimals: 0,
+    }
 
     const numbers = {
         one: document.querySelector(".one"),
@@ -21,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         eight: document.querySelector(".eight"),
         nine: document.querySelector(".nine"),
         cero: document.querySelector(".cero"),
+        decimal: document.querySelector(".decimal")
     }
 
     const operators = {
@@ -36,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener("click", function printOperators() {
             if(firstNumber == ''){
                 firstNumber = 0;
-                globalCounter ++;
             }
             let filteredOperator = display.textContent.split('')
             .slice(-1)
@@ -45,57 +50,111 @@ document.addEventListener('DOMContentLoaded', function () {
                 if(btn.textContent == '%'){
                     displayOperator(btn.textContent);
                     operate();
-                    globalCounter ++;
                 } else {
                     displayOperator(btn.textContent);
-                    globalCounter ++;
                 }
             }else if(filteredOperator.length == 1 && operator != '') {
                 operate();
                 if(btn.textContent == '%' && operator != '%'){
                     displayOperator(btn.textContent);
                     operate();
+                }else{
+                    displayOperator(btn.textContent);
                 }
-                displayOperator(btn.textContent);
+                
             }
         })
     })
 
     Object.values(numbers).forEach(btn => {
         btn.addEventListener("click", function printNumbers() {
-            if(globalCounter === 0 || globalCounter === 1){
-                printFirstNumber(btn.textContent);
-            }
-            let filteredNumbers = display.textContent.split('')
-            .slice(-2)
-            .filter((character) => operatorsList.includes(character));
-            if(result != '' && filteredNumbers == ''){
-                clearDisplay();
-                printFirstNumber(btn.textContent);
-            }else if(globalCounter >= 2 && filteredNumbers.length > 0){
-                printSecondNumber(btn.textContent);
+            if(operator == ''){
+                if(display.textContent == 0 && firstNumber != '0.'){
+                    display.textContent = '';
+                }
+                if(result != ''){
+                    if(btn.textContent == '.'){
+                        clearDisplay();
+                        display.textContent = '';
+                        firstNumber = printDecimal(btn.textContent, firstNumber);
+                    }else{
+                        clearDisplay();
+                        display.textContent = '';
+                        firstNumber = printFirstNumber(btn.textContent, firstNumber);
+                    }
+                }else{
+                    firstNumber = printFirstNumber(btn.textContent, firstNumber);
+                    btn.disabled = false;
+                }
+
+            } else if(operator != ''){
+                    secondNumber = printSecondNumber(btn.textContent, secondNumber);
+                    btn.disabled = false;
+                
             }
         })
     })
+
+    function printDecimal(buttonText, number){
+        if(number.includes('.')){
+            numbers.decimal.disabled = true;
+            return number;
+        }else if(number == ''){
+            number += `0${buttonText}`;
+            display.textContent += number;
+            return number;
+        }else{
+            number += buttonText;
+            display.textContent += buttonText;
+            return number;
+        }
+
+    }
 
     clear.addEventListener("click", clearDisplay);
 
     equalTo.addEventListener("click", operate)
 
-    function printFirstNumber(buttonText){
-        if(display.textContent == 0){
-            display.textContent = '';
+    function printFirstNumber(buttonText, number){
+        if(buttonText == '.' && counters.firstNumber < 3){
+            counters.firstNumber++;
+            number = printDecimal(buttonText, number);
+            counters.firstNumber--;
+            return number
+        }else if(number.includes('.') && counters.firstNumberDecimals < 2){
+            counters.firstNumberDecimals++;
+            counters.firstNumber++;
+            number += buttonText;
+            display.textContent += buttonText;
+            return number
+        }else if(counters.firstNumber < 2){
+            counters.firstNumber++;
+            number += buttonText;
+            display.textContent += buttonText;
+            return number
         }
-        let numberPlaceholder = buttonText;
-        globalCounter++;
-        firstNumber += numberPlaceholder;
-        display.textContent += numberPlaceholder;
+        return number;
     }
 
-    function printSecondNumber(buttonText){
-        let numberPlaceholder = buttonText;
-        secondNumber += numberPlaceholder;
-        display.textContent += numberPlaceholder;
+    function printSecondNumber(buttonText, number){
+        if(buttonText == '.' && counters.secondNumber < 3){
+            counters.secondNumber++;
+            number = printDecimal(buttonText, number);
+            counters.secondNumber--;
+            return number
+        }else if(number.includes('.') && counters.secondNumberDecimals < 2){
+            counters.secondNumberDecimals++;
+            counters.secondNumber++;
+            number += buttonText;
+            display.textContent += buttonText;
+            return number
+        }else if(counters.secondNumber < 2){
+            counters.secondNumber++;
+            number += buttonText;
+            display.textContent += buttonText;
+            return number
+        }
+        return number;
     }
 
     function displayOperator(buttonText){
@@ -107,6 +166,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function operate(){
+        counters.firstNumber = 0;
+        counters.firstNumberDecimals = 0;
+        counters.secondNumber = 0;
+        counters.secondNumberDecimals = 0;
         switch (true){
             case (operator == '+' && secondNumber != ''):
                 addition();
@@ -167,7 +230,10 @@ document.addEventListener('DOMContentLoaded', function () {
         secondNumber = '';
         operator = '';
         result = '';
-        globalCounter = 0;
+        counters.firstNumber = 0;
+        counters.firstNumberDecimals = 0;
+        counters.secondNumber = 0;
+        counters.secondNumberDecimals = 0;
     }
 
     function resultOfOperation(){
@@ -207,6 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
             trueResult = removeZeros(trueResult);
         }
         firstNumber = trueResult;
+        operator = '';
         secondNumber = '';
         return trueResult
     }
