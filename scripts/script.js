@@ -187,18 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return
         }
         display.textContent = display.textContent.slice(0, -1);
-        if(lastElement == firstNumber){
-            if(firstNumber.includes('.') && counters.firstNumberDecimals == 0){
-               counters.firstNumber--;
-               counters.firstNumber++;
-            }else if(firstNumber.includes('.') && counters.firstNumberDecimals < 3 ){
-                counters.firstNumberDecimals--;
-            }else if(counters.firstNumber > 0 && counters.firstNumber < 3){
-                counters.firstNumber--;
-            }
-            firstNumber = firstNumber.slice(0, -1);
-            lastElement = firstNumber
-        } else if(lastElement == secondNumber){
+        if(lastElement == secondNumber || (secondNumber == firstNumber && secondNumber == result)){
             if(secondNumber.includes('.') && counters.secondNumberDecimals == 0){
                counters.secondNumber--;
                counters.secondNumber++;
@@ -209,8 +198,32 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             secondNumber = secondNumber.slice(0, -1);
             lastElement = secondNumber
-        }else if(lastElement == operator){
+            if(secondNumber == ''){
+                lastElement = operator;
+            }
+        }else if(lastElement == result){
+            clearDisplay();
+        }else if(lastElement == firstNumber){
+            if(firstNumber.includes('.') && counters.firstNumberDecimals == 0){
+               counters.firstNumber--;
+               counters.firstNumber++;
+            }else if(firstNumber.includes('.') && counters.firstNumberDecimals < 3 ){
+                counters.firstNumberDecimals--;
+            }else if(counters.firstNumber > 0 && counters.firstNumber < 3){
+                counters.firstNumber--;
+            }
+            firstNumber = firstNumber.slice(0, -1);
+            lastElement = firstNumber
+            if(firstNumber == ''){
+                display.textContent = 0;
+            }
+        } else if(lastElement == operator){
             operator = operator.slice(0, -1);
+            if(result != ""){
+                lastElement = result;
+            } else {
+                lastElement = firstNumber;
+            }
         }
     }
 
@@ -312,6 +325,7 @@ document.addEventListener('DOMContentLoaded', function () {
         firstNumber = trueResult;
         operator = '';
         secondNumber = '';
+        lastElement = trueResult;
         return trueResult
     }
 
