@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let display = document.querySelector(".display");
     const clear = document.querySelector(".clear");
     const numerical = '0123456789';
-    const equalTo = document.querySelector('.equalTo')
+    const equalTo = document.querySelector('.equalTo');
+    const backspace = document.querySelector('.delete');
+    let lastElement = '';
 
     const counters = {
         firstNumber: 0,
@@ -52,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     operate();
                 } else {
                     displayOperator(btn.textContent);
+                    lastElement = operator;
                 }
             }else if(filteredOperator.length == 1 && operator != '') {
                 operate();
@@ -60,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     operate();
                 }else{
                     displayOperator(btn.textContent);
+                    lastElement = operator;
                 }
                 
             }
@@ -77,20 +81,23 @@ document.addEventListener('DOMContentLoaded', function () {
                         clearDisplay();
                         display.textContent = '';
                         firstNumber = printDecimal(btn.textContent, firstNumber);
+                        lastElement = firstNumber;
                     }else{
                         clearDisplay();
                         display.textContent = '';
                         firstNumber = printFirstNumber(btn.textContent, firstNumber);
+                        lastElement = firstNumber;
                     }
                 }else{
                     firstNumber = printFirstNumber(btn.textContent, firstNumber);
                     btn.disabled = false;
+                    lastElement = firstNumber;
                 }
 
             } else if(operator != ''){
                     secondNumber = printSecondNumber(btn.textContent, secondNumber);
                     btn.disabled = false;
-                
+                    lastElement = secondNumber;
             }
         })
     })
@@ -113,7 +120,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     clear.addEventListener("click", clearDisplay);
 
-    equalTo.addEventListener("click", operate)
+    backspace.addEventListener("click", removeLastInput)
+
+    equalTo.addEventListener("click", operate);
 
     function printFirstNumber(buttonText, number){
         if(buttonText == '.' && counters.firstNumber < 3){
@@ -123,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return number
         }else if(number.includes('.') && counters.firstNumberDecimals < 2){
             counters.firstNumberDecimals++;
-            counters.firstNumber++;
             number += buttonText;
             display.textContent += buttonText;
             return number
@@ -138,13 +146,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function printSecondNumber(buttonText, number){
         if(buttonText == '.' && counters.secondNumber < 3){
-            counters.secondNumber++;
             number = printDecimal(buttonText, number);
-            counters.secondNumber--;
             return number
         }else if(number.includes('.') && counters.secondNumberDecimals < 2){
             counters.secondNumberDecimals++;
-            counters.secondNumber++;
             number += buttonText;
             display.textContent += buttonText;
             return number
@@ -162,6 +167,50 @@ document.addEventListener('DOMContentLoaded', function () {
         operator = buttonText;
         if(operator != '%'){
             display.textContent += operator;
+        }
+    }
+
+    function clearDisplay(){
+        display.textContent = 0;
+        firstNumber = '';
+        secondNumber = '';
+        operator = '';
+        result = '';
+        counters.firstNumber = 0;
+        counters.firstNumberDecimals = 0;
+        counters.secondNumber = 0;
+        counters.secondNumberDecimals = 0;
+    }
+
+    function removeLastInput(){
+        if(display.textContent == 0 && display.textContent != '0.'){
+            return
+        }
+        display.textContent = display.textContent.slice(0, -1);
+        if(lastElement == firstNumber){
+            if(firstNumber.includes('.') && counters.firstNumberDecimals == 0){
+               counters.firstNumber--;
+               counters.firstNumber++;
+            }else if(firstNumber.includes('.') && counters.firstNumberDecimals < 3 ){
+                counters.firstNumberDecimals--;
+            }else if(counters.firstNumber > 0 && counters.firstNumber < 3){
+                counters.firstNumber--;
+            }
+            firstNumber = firstNumber.slice(0, -1);
+            lastElement = firstNumber
+        } else if(lastElement == secondNumber){
+            if(secondNumber.includes('.') && counters.secondNumberDecimals == 0){
+               counters.secondNumber--;
+               counters.secondNumber++;
+            }else if(secondNumber.includes('.') && counters.secondNumberDecimals < 3 ){
+                counters.secondNumberDecimals--;
+            }else if(counters.secondNumber > 0 && counters.secondNumber < 3){
+                counters.secondNumber--;
+            }
+            secondNumber = secondNumber.slice(0, -1);
+            lastElement = secondNumber
+        }else if(lastElement == operator){
+            operator = operator.slice(0, -1);
         }
     }
 
@@ -222,18 +271,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function percentage(){
         result = resultOfOperation();
         display.textContent = result;
-    }
-
-    function clearDisplay(){
-        display.textContent = 0;
-        firstNumber = '';
-        secondNumber = '';
-        operator = '';
-        result = '';
-        counters.firstNumber = 0;
-        counters.firstNumberDecimals = 0;
-        counters.secondNumber = 0;
-        counters.secondNumberDecimals = 0;
     }
 
     function resultOfOperation(){
