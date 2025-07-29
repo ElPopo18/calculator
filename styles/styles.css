@@ -20,10 +20,11 @@ body{
     width: 400px;
     height: 600px;
     background-color: black;
-    padding: 5px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 5px;
+    border-radius: 12px;
 }
 
 .screen-container{
