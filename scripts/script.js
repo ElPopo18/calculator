@@ -40,67 +40,63 @@ document.addEventListener('DOMContentLoaded', function () {
         percentage: document.querySelector(".percentage"),
     }
 
-    Object.values(operators).forEach(btn => {
-        btn.addEventListener("click", function printOperators() {
-            if(firstNumber == ''){
-                firstNumber = 0;
-            }
-            let filteredOperator = display.textContent.split('')
-            .slice(-1)
-            .filter((character) => numerical.includes(character))
-            if(filteredOperator.length == 1 && operator == ''){
-                if(btn.textContent == '%'){
-                    displayOperator(btn.textContent);
-                    operate();
-                } else {
-                    displayOperator(btn.textContent);
-                    lastElement = operator;
-                }
-            }else if(filteredOperator.length == 1 && operator != '') {
-                operate();
-                if(btn.textContent == '%' && operator != '%'){
-                    displayOperator(btn.textContent);
-                    operate();
-                }else{
-                    displayOperator(btn.textContent);
-                    lastElement = operator;
-                }
-                
-            }
-        })
-    })
 
-    Object.values(numbers).forEach(btn => {
-        btn.addEventListener("click", function printNumbers() {
-            if(operator == ''){
-                if(display.textContent == 0 && firstNumber != '0.'){
+
+    function printOperators(event) {
+        if(firstNumber == ''){
+            firstNumber = 0;
+        }
+        let filteredOperator = display.textContent.split('')
+        .slice(-1)
+        .filter((character) => numerical.includes(character))
+        if(filteredOperator.length == 1 && operator == ''){
+            if(event.textContent == '%'){
+                displayOperator(event.textContent);
+                operate();
+            } else {
+                displayOperator(event.textContent);
+                lastElement = operator;
+            }
+        }else if(filteredOperator.length == 1 && operator != '') {
+            operate();
+            if(event.textContent == '%' && operator != '%'){
+                displayOperator(event.textContent);
+                operate();
+            }else{
+                displayOperator(event.textContent);
+                lastElement = operator;
+            }
+        }
+    }
+
+    function printNumbers(event) {
+        if(operator == ''){
+            if(display.textContent == 0 && firstNumber != '0.'){
+                display.textContent = '';
+            }
+            if(result != ''){
+                if(event.textContent == '.'){
+                    clearDisplay();
                     display.textContent = '';
-                }
-                if(result != ''){
-                    if(btn.textContent == '.'){
-                        clearDisplay();
-                        display.textContent = '';
-                        firstNumber = printDecimal(btn.textContent, firstNumber);
-                        lastElement = firstNumber;
-                    }else{
-                        clearDisplay();
-                        display.textContent = '';
-                        firstNumber = printFirstNumber(btn.textContent, firstNumber);
-                        lastElement = firstNumber;
-                    }
+                    firstNumber = printDecimal(event.textContent, firstNumber);
+                    lastElement = firstNumber;
                 }else{
-                    firstNumber = printFirstNumber(btn.textContent, firstNumber);
-                    btn.disabled = false;
+                    clearDisplay();
+                    display.textContent = '';
+                    firstNumber = printFirstNumber(event.textContent, firstNumber);
                     lastElement = firstNumber;
                 }
-
-            } else if(operator != ''){
-                    secondNumber = printSecondNumber(btn.textContent, secondNumber);
-                    btn.disabled = false;
-                    lastElement = secondNumber;
+            }else{
+                firstNumber = printFirstNumber(event.textContent, firstNumber);
+                event.disabled = false;
+                lastElement = firstNumber;
             }
-        })
-    })
+        } else if(operator != ''){
+                secondNumber = printSecondNumber(event.textContent, secondNumber);
+                event.disabled = false;
+                lastElement = secondNumber;
+        }
+    }
 
     function printDecimal(buttonText, number){
         if(number.includes('.')){
@@ -118,11 +114,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    clear.addEventListener("click", clearDisplay);
+    document.addEventListener('keydown', (e) => {
+        Object.values(numbers).forEach(btn => {
+            if(e.key == btn.textContent){
+                btn.addEventListener("keydown", printNumbers(btn));
+            };
+        });
 
-    backspace.addEventListener("click", removeLastInput)
+        Object.values(operators).forEach(btn => {
+            if(e.key == btn.textContent){
+                btn.addEventListener("keydown", printOperators(btn));
+            };
+        });
+        
+        if(e.key === 'Escape'){
+            clearDisplay();
+        } else if (e.key === 'Enter'){
+            operate();
+        } else if (e.key === 'Backspace'){
+            removeLastInput();
+        }
+    })
 
-    equalTo.addEventListener("click", operate);
+    document.addEventListener('pointerup', (e) => {
+        Object.values(numbers).forEach(btn => {
+            if(e.target.textContent == btn.textContent){
+                btn.addEventListener("pointerup", printNumbers(btn));
+            }
+        })
+
+        Object.values(operators).forEach(btn => {
+            if(e.target.textContent == btn.textContent){
+                btn.addEventListener("pointerup", printOperators(btn));
+            }
+        })
+
+        clear.addEventListener("pointerup", clearDisplay);
+
+        backspace.addEventListener("pointerup", removeLastInput)
+
+        equalTo.addEventListener("pointerup", operate);
+
+    })
 
     function printFirstNumber(buttonText, number){
         if(buttonText == '.' && counters.firstNumber < 3){
